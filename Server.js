@@ -3,19 +3,19 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 require('dotenv').config()
 
-const dburl = "mongodb://localhost:27017/sdp4"
-mongoose.connect(dburl).then(() => {
-    console.log("Connected to DB Successfully")
-}).catch((e) => {
-    console.log(e.message)
-});
-
-// const dburl = process.env.mongodburl
+// const dburl = "mongodb://localhost:27017/sdp4"
 // mongoose.connect(dburl).then(() => {
-//     console.log("Connected to MongoDB Atlas Successfully")
+//     console.log("Connected to DB Successfully")
 // }).catch((e) => {
 //     console.log(e.message)
 // });
+
+const dburl = process.env.mongodburl
+mongoose.connect(dburl).then(() => {
+    console.log("Connected to MongoDB Atlas Successfully")
+}).catch((e) => {
+    console.log(e.message)
+});
 
 const app = express()
 app.use(express.json())  //to parse JSON data
