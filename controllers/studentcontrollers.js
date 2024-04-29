@@ -65,7 +65,7 @@ const checkstudentlogin = async (request, response) =>
       await smapcourse.save();
       response.status(200).json({ success: true, message: 'Data registered successfully' });
   } catch (error) {
-      console.error('Error occurred while saving data:', error);
+      console.error('Error occurred while saving data:', error.message);
       response.status(500).json({ success: false, error: error.message });
   }
 };
