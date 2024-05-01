@@ -3,6 +3,7 @@ const Course = require("../models/Course")
 const FCMapping = require("../models/FacultuyCourseMapping")
 const SCMapping = require("../models/StudentCourseMapping")
 
+
 const insertstudent = async (request, response) => {
     try 
     {
@@ -31,6 +32,18 @@ const checkstudentlogin = async (request, response) =>
      response.status(500).send(error.message); //200 - success || 500 - error || 404 - not found 
    }
  };
+
+ const changestudentlogin = async (request,response) => {
+  try {
+    const studentid = request.params.studentid
+    const student = await Student.findOne({"studentid":studentid})
+    student.isFirstLogin = false
+    student.save()
+    response.status(200).send("Student Data Updated Successfully")
+  } catch (error) {
+    response.status(500).send(error.message);
+  }
+ }
 
  const getcoursebyay = async (request,response) =>{
   try {
@@ -83,6 +96,27 @@ const viewstudentcourses = async (request,response) =>{
   }
 }
 
+
+const changestudentpwd = async (request,response) => {
+  try {
+    const {studentid,oldpassword,newpassword} = request.body;
+    const student = await Student.findOne({"studentid":studentid,"password":oldpassword})
+    if(!student)
+      response.status(400).send("Invalid Old Password");
+    else{
+      if(oldpassword===newpassword){
+        response.status(400).send("Both Passwords are Same")
+      }else{
+        await Student.updateOne({studentid},{$set: {password:newpassword}});
+        response.status(200).json("Password Updated Successfully");
+      }
+    }
+  } catch (error) {
+    response.status(500).send(error.message);
+  }
+}
+
+
 module.exports = {
   insertstudent,
   checkstudentlogin,
@@ -90,4 +124,7 @@ module.exports = {
   getfacultybyccode,
   insertstudentcourses,
   viewstudentcourses,
+  changestudentpwd,
+  changestudentlogin,
+
 };

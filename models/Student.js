@@ -88,6 +88,11 @@ const studentschema = new mongoose.Schema({
     branch:{
         type:String,
         required:true
+    },
+    isFirstLogin:{
+        type:Boolean,
+        required:true,
+        default:true
     }
 })
 const student = mongoose.model('Student', studentschema);

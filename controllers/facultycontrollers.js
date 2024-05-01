@@ -27,6 +27,18 @@ const checkfacultylogin = async (request, response) =>
    }
  };
 
+ const changefacultylogin = async(request,response) => {
+    try {
+      const facultyid =request.params.facultyid
+      const faculty = await Faculty.findOne({"facultyid":facultyid})
+      faculty.isFirstLogin = false
+      faculty.save()
+      response.status(200).send("Faculty data is updated")
+    } catch (error) {
+      response.status(500).send(error.message);
+    }
+ }
+
  const getmappedcoursebyfacultyid = async(request,response) =>{
   try {
     const facultyid = request.params.facultyid
@@ -41,4 +53,29 @@ const checkfacultylogin = async (request, response) =>
   }
  }
 
-module.exports={insertfaculty,checkfacultylogin,getmappedcoursebyfacultyid}
+ const changefacultypwd = async (request,response) => {
+  try {
+    const {facultyid,oldpassword,newpassword} = request.body;
+    const faculty = await Faculty.findOne({'facultyid':facultyid,'password':oldpassword});
+    if(!faculty)
+        response.status(400).send("Invalid Old Password");
+    else{
+      if(oldpassword===newpassword)
+          response.status(400).send("Both Passwords are Same")
+      else{
+        await Faculty.updateOne({facultyid},{$set: {password:newpassword}});
+        response.status(200).json("Password Updated Successfully");
+      }
+    }
+  } catch (error) {
+    response.status(500).send(error.message);
+  }
+ }
+
+module.exports={
+  insertfaculty,
+  checkfacultylogin,
+  getmappedcoursebyfacultyid,
+  changefacultypwd,
+  changefacultylogin,
+}

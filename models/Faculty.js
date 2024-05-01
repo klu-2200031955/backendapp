@@ -54,6 +54,11 @@ const facultyschema = new mongoose.Schema({
         type:String,
         required:true
     },
+    isFirstLogin:{
+        type:Boolean,
+        required:true,
+        default:true
+    }
 })
 
 const faculty = mongoose.model('Faculty',facultyschema)
