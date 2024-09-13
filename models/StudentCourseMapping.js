@@ -10,7 +10,6 @@ const studentcoursemappingschema = mongoose.Schema({
     ccode: {
         type: String,
         required: true,
-        unique:true
     },
     facultyid: {
        type: String,
@@ -21,6 +20,10 @@ const studentcoursemappingschema = mongoose.Schema({
       required: true
     },
     studentid: {
+      type: String,
+      required: true
+    },
+    fullname: {
       type: String,
       required: true
     }

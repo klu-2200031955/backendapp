@@ -1,5 +1,6 @@
 const Faculty = require('../models/Faculty')
 const FCMapping = require('../models/FacultuyCourseMapping')
+const SCMapping = require('../models/StudentCourseMapping')
 
 const insertfaculty = async(request,response) =>{
   try {
@@ -53,6 +54,21 @@ const checkfacultylogin = async (request, response) =>
   }
  }
 
+ const getmappedstudentsbyfmapid = async(request,response) => {
+  try {
+      const fmapid = request.params.fmapid
+      // const ccode = request.params.ccode
+      const mappedcourses = await SCMapping.find({"fmapid":fmapid})
+      if(mappedcourses){
+        response.json(mappedcourses)
+      }else{
+        return response.status(200).send('No Students are Mapped to the given Faculty');
+      }
+  } catch(error){
+    response.status(500).send(error.message);
+  }
+ }
+
  const changefacultypwd = async (request,response) => {
   try {
     const {facultyid,oldpassword,newpassword} = request.body;
@@ -78,4 +94,5 @@ module.exports={
   getmappedcoursebyfacultyid,
   changefacultypwd,
   changefacultylogin,
+  getmappedstudentsbyfmapid,
 }

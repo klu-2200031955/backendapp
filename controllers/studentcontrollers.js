@@ -33,6 +33,16 @@ const checkstudentlogin = async (request, response) =>
    }
  };
 
+ const getStudentbyId = async(request,response) =>{
+  try {
+    const studentid = request.params.studentid
+    const student = await Student.findById(studentid)
+    response.json(student)
+  } catch (error) {
+    response.status(500).send(error.message);
+  }
+ }
+
  const changestudentlogin = async (request,response) => {
   try {
     const studentid = request.params.studentid
