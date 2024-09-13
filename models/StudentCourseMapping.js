@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const studentcoursemappingschema = new mongoose.Schema({
-    smapid:{
+    smapid: {
         type: String,
         required: true,
         unique: true,
@@ -9,9 +9,7 @@ const studentcoursemappingschema = new mongoose.Schema({
     },
     ccode: {
         type: String,
-        required: true,
-        // Ensure it's not marked as unique
-        unique: false
+        required: true
     },
     facultyid: {
        type: String,
@@ -30,6 +28,9 @@ const studentcoursemappingschema = new mongoose.Schema({
       required: true
     }
 });
+
+// Composite unique index on studentid and ccode
+studentcoursemappingschema.index({ studentid: 1, ccode: 1 }, { unique: true });
 
 const scmapping = mongoose.model('StudentCourseMapping', studentcoursemappingschema);
 
